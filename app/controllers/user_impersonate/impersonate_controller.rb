@@ -10,16 +10,10 @@ module UserImpersonate
     # Normal apps wouldn't bother with this action; rather they would
     # go straight to GET /impersonate/user/123 (create action)
     def index
-      users_table = Arel::Table.new(user_table.to_sym) # e.g. :users
-      id_column = users_table[user_id_column.to_sym]   # e.g. users_table[:id]
-      @users = user_class.order("updated_at DESC").
-                    where(
-                      id_column.not_in [
-                        current_user.send(user_id_column.to_sym) # e.g. current_user.id
-                      ])
-      if params[:search]
-        @users = @users.where("name like ?", "%#{params[:search]}%")
-      end
+      @users = User.all
+      #if params[:search]
+      #  @users = @users.where("name like ?", "%#{params[:search]}%")
+      #end
     end
     
     # Perform the user impersonate action
